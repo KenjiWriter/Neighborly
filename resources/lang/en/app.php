@@ -9,14 +9,30 @@ return [
         'actions' => 'Actions',
     ],
     'auth' => [
-        'login' => 'Log in',
-        'email' => 'Email',
-        'password' => 'Password',
+        'login' => [
+            'title' => 'Log in to your account',
+            'description' => 'Enter your email and password below to log in',
+        ],
+        'register' => [
+            'title' => 'Create an account',
+            'description' => 'Enter your details below to create your account',
+        ],
+        'fields' => [
+            'email' => 'Email',
+            'password' => 'Password',
+            'name' => 'Name',
+            'confirm_password' => 'Confirm Password',
+        ],
+        'actions' => [
+            'login' => 'Log in',
+            'register' => 'Register',
+        ],
+        'links' => [
+            'forgot_password' => 'Forgot your password?',
+            'not_registered' => "Don't have an account?",
+        ],
         'remember_me' => 'Remember me',
-        'forgot_password' => 'Forgot your password?',
-        'name' => 'Name',
-        'confirm_password' => 'Confirm Password',
-        'register' => 'Register',
+        'email_placeholder' => 'email@example.com',
         'already_registered' => 'Already registered?',
     ],
     'registration' => [

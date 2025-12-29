@@ -9,14 +9,30 @@ return [
         'actions' => 'Akcje',
     ],
     'auth' => [
-        'login' => 'Zaloguj się',
-        'email' => 'Email',
-        'password' => 'Hasło',
+        'login' => [
+            'title' => 'Zaloguj się do swojego konta',
+            'description' => 'Wprowadź swój email i hasło, aby się zalogować',
+        ],
+        'register' => [
+            'title' => 'Utwórz konto',
+            'description' => 'Wprowadź swoje dane, aby utworzyć konto',
+        ],
+        'fields' => [
+            'email' => 'Email',
+            'password' => 'Hasło',
+            'name' => 'Imię',
+            'confirm_password' => 'Potwierdź hasło',
+        ],
+        'actions' => [
+            'login' => 'Zaloguj się',
+            'register' => 'Zarejestruj się',
+        ],
+        'links' => [
+            'forgot_password' => 'Zapomniałeś hasła?',
+            'not_registered' => 'Nie masz konta?',
+        ],
         'remember_me' => 'Zapamiętaj mnie',
-        'forgot_password' => 'Zapomniałeś hasła?',
-        'name' => 'Imię',
-        'confirm_password' => 'Potwierdź hasło',
-        'register' => 'Zarejestruj się',
+        'email_placeholder' => 'email@example.com',
         'already_registered' => 'Już zarejestrowany?',
     ],
     'registration' => [

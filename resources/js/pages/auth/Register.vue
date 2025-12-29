@@ -107,16 +107,16 @@ onMounted(() => {
 
 <template>
     <AuthBase
-        title="Create an account"
-        description="Enter your details below to create your account"
+        :title="t('auth.register.title')"
+        :description="t('auth.register.description')"
     >
-        <Head title="Register" />
+        <Head :title="t('auth.register.title')" />
 
         <form @submit.prevent="submit" class="flex flex-col gap-6">
             <div class="grid gap-6">
                 <!-- Name -->
                 <div class="grid gap-2">
-                    <Label for="name">{{ t('auth.name') }}</Label>
+                    <Label for="name">{{ t('auth.fields.name') }}</Label>
                     <Input
                         id="name"
                         v-model="form.name"
@@ -125,14 +125,14 @@ onMounted(() => {
                         autofocus
                         :tabindex="1"
                         autocomplete="name"
-                        :placeholder="t('auth.name')"
+                        :placeholder="t('auth.fields.name')"
                     />
                     <InputError :message="form.errors.name" />
                 </div>
 
                 <!-- Email -->
                 <div class="grid gap-2">
-                    <Label for="email">{{ t('auth.email') }}</Label>
+                    <Label for="email">{{ t('auth.fields.email') }}</Label>
                     <Input
                         id="email"
                         v-model="form.email"
@@ -140,7 +140,7 @@ onMounted(() => {
                         required
                         :tabindex="2"
                         autocomplete="email"
-                        :placeholder="t('auth.email')"
+                        :placeholder="t('auth.email_placeholder')"
                     />
                     <InputError :message="form.errors.email" />
                 </div>
@@ -188,7 +188,7 @@ onMounted(() => {
 
                 <!-- Password -->
                 <div class="grid gap-2">
-                    <Label for="password">{{ t('auth.password') }}</Label>
+                    <Label for="password">{{ t('auth.fields.password') }}</Label>
                     <Input
                         id="password"
                         v-model="form.password"
@@ -196,14 +196,14 @@ onMounted(() => {
                         required
                         :tabindex="6"
                         autocomplete="new-password"
-                        :placeholder="t('auth.password')"
+                        :placeholder="t('auth.fields.password')"
                     />
                     <InputError :message="form.errors.password" />
                 </div>
 
                 <!-- Confirm Password -->
                 <div class="grid gap-2">
-                    <Label for="password_confirmation">{{ t('auth.confirm_password') }}</Label>
+                    <Label for="password_confirmation">{{ t('auth.fields.confirm_password') }}</Label>
                     <Input
                         id="password_confirmation"
                         v-model="form.password_confirmation"
@@ -211,7 +211,7 @@ onMounted(() => {
                         required
                         :tabindex="7"
                         autocomplete="new-password"
-                        :placeholder="t('auth.confirm_password')"
+                        :placeholder="t('auth.fields.confirm_password')"
                     />
                     <InputError :message="form.errors.password_confirmation" />
                 </div>
@@ -224,7 +224,7 @@ onMounted(() => {
                     data-test="register-user-button"
                 >
                     <Spinner v-if="form.processing" />
-                    {{ t('auth.register') }}
+                    {{ t('auth.actions.register') }}
                 </Button>
             </div>
 
@@ -235,7 +235,7 @@ onMounted(() => {
                     class="underline underline-offset-4"
                     :tabindex="9"
                 >
-                    {{ t('auth.login') }}
+                    {{ t('auth.actions.login') }}
                 </TextLink>
             </div>
         </form>
