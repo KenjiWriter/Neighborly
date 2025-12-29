@@ -32,6 +32,18 @@ Route::controller(\App\Http\Controllers\MaintenanceRequestController::class)->gr
     Route::patch('maintenance/{maintenanceRequest}/status', 'updateStatus')->name('maintenance.status');
 })->middleware(['auth', 'verified']);
 
+// Finance & Documents
+Route::controller(\App\Http\Controllers\FinanceController::class)->group(function () {
+    Route::get('finances/overview', 'overview')->name('finances.overview');
+})->middleware(['auth', 'verified']);
+
+Route::controller(\App\Http\Controllers\DocumentController::class)->group(function () {
+    Route::get('documents', 'index')->name('documents.index');
+    Route::get('documents/upload', 'create')->name('documents.create');
+    Route::post('documents', 'store')->name('documents.store');
+    Route::get('documents/{document}/download', 'download')->name('documents.download');
+})->middleware(['auth', 'verified']);
+
 require __DIR__.'/settings.php';
 
 Route::get('locale/{locale}', function ($locale) {
