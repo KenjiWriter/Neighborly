@@ -1,9 +1,8 @@
-<script setup lang="ts">
-import InputError from '@/components/InputError.vue';
+<script setup>
+import FormInput from '@/components/Form/FormInput.vue';
 import TextLink from '@/components/TextLink.vue';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Spinner } from '@/components/ui/spinner';
 import AuthBase from '@/layouts/AuthLayout.vue';
@@ -11,20 +10,23 @@ import { register } from '@/routes';
 import { store } from '@/routes/login';
 import { request } from '@/routes/password';
 import { Form, Head } from '@inertiajs/vue3';
+import { useI18n } from '@/composables/useI18n';
 
-defineProps<{
-    status?: string;
-    canResetPassword: boolean;
-    canRegister: boolean;
-}>();
+const { t } = useI18n();
+
+defineProps({
+    status: String,
+    canResetPassword: Boolean,
+    canRegister: Boolean,
+});
 </script>
 
 <template>
     <AuthBase
-        title="Log in to your account"
-        description="Enter your email and password below to log in"
+        :title="t('auth.login_title', 'Log in to your account')"
+        :description="t('auth.login_description', 'Enter your email and password below to log in')"
     >
-        <Head title="Log in" />
+        <Head :title="t('auth.login')" />
 
         <div
             v-if="status"
@@ -40,9 +42,9 @@ defineProps<{
             class="flex flex-col gap-6"
         >
             <div class="grid gap-6">
+                <!-- Email -->
                 <div class="grid gap-2">
-                    <Label for="email">Email address</Label>
-                    <Input
+                    <FormInput
                         id="email"
                         type="email"
                         name="email"
@@ -50,39 +52,42 @@ defineProps<{
                         autofocus
                         :tabindex="1"
                         autocomplete="email"
-                        placeholder="email@example.com"
+                        :label="t('auth.email')"
+                        :placeholder="t('auth.email_placeholder', 'email@example.com')"
+                        :error="errors.email"
                     />
-                    <InputError :message="errors.email" />
                 </div>
 
+                <!-- Password -->
                 <div class="grid gap-2">
                     <div class="flex items-center justify-between">
-                        <Label for="password">Password</Label>
+                        <Label for="password">{{ t('auth.password') }}</Label>
                         <TextLink
                             v-if="canResetPassword"
                             :href="request()"
                             class="text-sm"
                             :tabindex="5"
                         >
-                            Forgot password?
+                            {{ t('auth.forgot_password') }}
                         </TextLink>
                     </div>
-                    <Input
+                    <FormInput
                         id="password"
                         type="password"
                         name="password"
                         required
                         :tabindex="2"
                         autocomplete="current-password"
-                        placeholder="Password"
+                        :placeholder="t('auth.password')"
+                        :error="errors.password"
                     />
-                    <InputError :message="errors.password" />
                 </div>
 
+                <!-- Remember Me -->
                 <div class="flex items-center justify-between">
                     <Label for="remember" class="flex items-center space-x-3">
                         <Checkbox id="remember" name="remember" :tabindex="3" />
-                        <span>Remember me</span>
+                        <span>{{ t('auth.remember_me') }}</span>
                     </Label>
                 </div>
 
@@ -94,7 +99,7 @@ defineProps<{
                     data-test="login-button"
                 >
                     <Spinner v-if="processing" />
-                    Log in
+                    {{ t('auth.login') }}
                 </Button>
             </div>
 
@@ -102,8 +107,8 @@ defineProps<{
                 class="text-center text-sm text-muted-foreground"
                 v-if="canRegister"
             >
-                Don't have an account?
-                <TextLink :href="register()" :tabindex="5">Sign up</TextLink>
+                {{ t('auth.not_registered', "Don't have an account?") }}
+                <TextLink :href="register()" :tabindex="5">{{ t('auth.register') }}</TextLink>
             </div>
         </Form>
     </AuthBase>
