@@ -31,6 +31,9 @@ export const routes = {
     maintenanceIndex: '/maintenance',
     maintenanceCreate: '/maintenance/create',
     maintenanceShow: (id: string | number) => `/maintenance/${id}`,
+    maintenanceStore: '/maintenance',
+    maintenanceAssign: (id: string | number) => `/maintenance/${id}/assign`,
+    maintenanceStatus: (id: string | number) => `/maintenance/${id}/status`,
 
     // Finance
     financesOverview: '/finances/overview',
@@ -38,6 +41,7 @@ export const routes = {
     // Documents
     documentsIndex: '/documents',
     documentsCreate: '/documents/upload',
+    documentsStore: '/documents',
     documentsDownload: (id: string | number) => `/documents/${id}/download`,
 
     // Audit
@@ -55,6 +59,8 @@ export const routes = {
 
     // Admin
     adminUsersPending: '/admin/users/pending',
+    adminUsersApprove: (userId: string | number) => `/admin/users/${userId}/approve`,
+    adminUsersReject: (userId: string | number) => `/admin/users/${userId}/reject`,
 } as const;
 
 export type RouteKey = keyof typeof routes;
