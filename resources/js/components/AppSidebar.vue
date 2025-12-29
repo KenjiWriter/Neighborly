@@ -11,7 +11,7 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
-import { dashboard } from '@/routes';
+import { routes } from '@/config/routes';
 import { type NavItem } from '@/types';
 import { usePage, Link } from '@inertiajs/vue3';
 import { BookOpen, Folder, LayoutGrid, PieChart, FileText, ShieldCheck } from 'lucide-vue-next';
@@ -26,7 +26,7 @@ const mainNavItems = computed(() => {
     const items: NavItem[] = [
         {
             title: t('dashboard.title'),
-            href: dashboard(),
+            href: routes.dashboard,
             icon: LayoutGrid,
         },
     ];
@@ -34,7 +34,7 @@ const mainNavItems = computed(() => {
     if (page.props.auth.can.viewCommunityPrimary) {
         items.push({
             title: t('community.title'),
-            href: route('communities.show'),
+            href: routes.communityPrimary,
             icon: Folder,
         });
     }
@@ -42,7 +42,7 @@ const mainNavItems = computed(() => {
     if (page.props.auth.can.viewMaintenanceRequests) {
         items.push({
             title: t('maintenance.title'),
-            href: route('maintenance.index'),
+            href: routes.maintenanceIndex,
             icon: LayoutGrid, 
         });
     }
@@ -50,7 +50,7 @@ const mainNavItems = computed(() => {
     if (page.props.auth.can.viewFinanceOverview) {
         items.push({
             title: t('finance.overview'),
-            href: route('finances.overview'),
+            href: routes.financesOverview,
             icon: PieChart, 
         });
     }
@@ -58,7 +58,7 @@ const mainNavItems = computed(() => {
     if (page.props.auth.can.viewDocuments) {
         items.push({
             title: t('documents.title'),
-            href: route('documents.index'),
+            href: routes.documentsIndex,
             icon: FileText, 
         });
     }
@@ -66,7 +66,7 @@ const mainNavItems = computed(() => {
     if (page.props.auth.can.viewAudit) {
         items.push({
             title: t('audit.title'),
-            href: route('audit.index'),
+            href: routes.auditIndex,
             icon: ShieldCheck, 
         });
     }
@@ -94,7 +94,7 @@ const footerNavItems: NavItem[] = [
             <SidebarMenu>
                 <SidebarMenuItem>
                     <SidebarMenuButton size="lg" as-child>
-                        <Link :href="dashboard()">
+                        <Link :href="routes.dashboard">
                             <AppLogo />
                         </Link>
                     </SidebarMenuButton>
