@@ -24,6 +24,7 @@ class UserSeeder extends Seeder
             'locale' => 'en',
             'email_verified_at' => now(),
         ]);
+        $resident->assignRole('resident');
 
         // Attach to first unit if exists
         $unit = Unit::first();
@@ -31,40 +32,51 @@ class UserSeeder extends Seeder
             $resident->units()->attach($unit->id, ['relationship_type' => 'owner']);
         }
 
+        // Fetch Community for Staff scoping
+        $community = \App\Models\Community::first();
+
         // Board Member
-        User::create([
+        $board = User::create([
             'name' => 'Sarah Board',
             'email' => 'board@neighborly.test',
             'password' => $password,
             'locale' => 'en',
             'email_verified_at' => now(),
+            'community_id' => $community?->id,
         ]);
+        $board->assignRole('board_member');
 
         // Accountant
-        User::create([
+        $accountant = User::create([
             'name' => 'Alex Accountant',
             'email' => 'accountant@neighborly.test',
             'password' => $password,
-            'locale' => 'pl', // Demo: seeding a PL user
+            'locale' => 'pl',
             'email_verified_at' => now(),
+            'community_id' => $community?->id,
         ]);
+        $accountant->assignRole('accountant');
 
         // Service Provider
-        User::create([
+        $provider = User::create([
             'name' => 'FixIt Pro',
             'email' => 'provider@neighborly.test',
             'password' => $password,
             'locale' => 'en',
             'email_verified_at' => now(),
+            // Provider optionally scoped to community, but access denied by policy/permissions
+            'community_id' => $community?->id,
         ]);
+        $provider->assignRole('service_provider');
 
         // Admin
-        User::create([
+        $admin = User::create([
             'name' => 'System Admin',
             'email' => 'admin@neighborly.test',
             'password' => $password,
             'locale' => 'en',
             'email_verified_at' => now(),
         ]);
+        $admin->assignRole('admin');
     }
 }
