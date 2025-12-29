@@ -19,6 +19,18 @@ return [
         'register' => 'Register',
         'already_registered' => 'Already registered?',
     ],
+    'registration' => [
+        'community' => 'Community',
+        'building' => 'Building',
+        'unit' => 'Unit',
+        'select_community' => 'Select Community',
+        'select_building' => 'Select Building',
+        'select_unit' => 'Select Unit',
+        'loading_buildings' => 'Loading buildings...',
+        'loading_units' => 'Loading units...',
+        'no_buildings' => 'No buildings found',
+        'no_units' => 'No units found',
+    ],
     'dashboard' => [
         'title' => 'Dashboard',
         'welcome' => 'Welcome to Neighborly',

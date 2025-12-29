@@ -19,6 +19,18 @@ return [
         'register' => 'Zarejestruj się',
         'already_registered' => 'Już zarejestrowany?',
     ],
+    'registration' => [
+        'community' => 'Osiedle',
+        'building' => 'Budynek',
+        'unit' => 'Lokal/Mieszkanie',
+        'select_community' => 'Wybierz osiedle',
+        'select_building' => 'Wybierz budynek',
+        'select_unit' => 'Wybierz lokal',
+        'loading_buildings' => 'Ładowanie budynków...',
+        'loading_units' => 'Ładowanie lokali...',
+        'no_buildings' => 'Brak budynków',
+        'no_units' => 'Brak lokali',
+    ],
     'dashboard' => [
         'title' => 'Pulpit',
         'welcome' => 'Witaj w Neighborly',
