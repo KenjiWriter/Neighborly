@@ -6,9 +6,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import { Spinner } from '@/components/ui/spinner';
 import AuthBase from '@/layouts/AuthLayout.vue';
-import { register } from '@/routes';
 import { store } from '@/routes/login';
-import { request } from '@/routes/password';
 import { Form, Head } from '@inertiajs/vue3';
 import { useI18n } from '@/composables/useI18n';
 
@@ -64,7 +62,7 @@ defineProps({
                         <Label for="password">{{ t('auth.password') }}</Label>
                         <TextLink
                             v-if="canResetPassword"
-                            :href="request()"
+                            href="/forgot-password"
                             class="text-sm"
                             :tabindex="5"
                         >
@@ -108,7 +106,7 @@ defineProps({
                 v-if="canRegister"
             >
                 {{ t('auth.not_registered', "Don't have an account?") }}
-                <TextLink :href="register()" :tabindex="5">{{ t('auth.register') }}</TextLink>
+                <TextLink href="/register" :tabindex="5">{{ t('auth.register') }}</TextLink>
             </div>
         </Form>
     </AuthBase>

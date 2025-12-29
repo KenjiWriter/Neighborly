@@ -10,6 +10,13 @@ Route::get('/', function () {
     ]);
 })->name('home');
 
+Route::controller(\App\Http\Controllers\RegistrationOptionsController::class)->prefix('registration-options')->group(function () {
+    Route::get('communities', 'communities')->name('registration.communities');
+    Route::get('buildings', 'buildings')->name('registration.buildings');
+    Route::get('units', 'units')->name('registration.units');
+});
+
+
 Route::middleware(['auth', 'verified'])->group(function () {
     // Account Verification Status Routes
     Route::get('/account/status', function () {
