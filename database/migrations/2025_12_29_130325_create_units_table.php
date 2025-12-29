@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('units', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('community_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('building_id')->constrained()->cascadeOnDelete();
+            $table->string('label');
+            $table->integer('floor')->nullable();
             $table->timestamps();
         });
     }

@@ -22,7 +22,15 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'locale',
     ];
+
+    public function units(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->belongsToMany(Unit::class)
+            ->withPivot('relationship_type')
+            ->withTimestamps();
+    }
 
     /**
      * The attributes that should be hidden for serialization.
