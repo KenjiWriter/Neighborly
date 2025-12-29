@@ -8,6 +8,7 @@ import { useI18n } from '@/composables/useI18n';
 import { useForm, usePage } from '@inertiajs/vue3';
 import { Label } from '@/components/ui/label';
 import { computed } from 'vue';
+import { routes } from '@/config/routes';
 
 const { t } = useI18n();
 const page = usePage();
@@ -23,14 +24,14 @@ const formAssign = useForm({
 });
 
 const submitAssign = () => {
-    formAssign.patch(route('maintenance.assign', props.maintenanceRequest.id), {
+    formAssign.patch(routes.maintenanceAssign(props.maintenanceRequest.id), {
         preserveScroll: true,
     });
 };
 
 const updateStatus = (status) => {
     if (confirm(t('common.confirm_action'))) {
-        useForm({ status }).patch(route('maintenance.status', props.maintenanceRequest.id));
+        useForm({ status }).patch(routes.maintenanceStatus(props.maintenanceRequest.id));
     }
 };
 

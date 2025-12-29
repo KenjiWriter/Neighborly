@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { useI18n } from '@/composables/useI18n';
 import { Link, usePage } from '@inertiajs/vue3';
 import { Badge } from '@/components/ui/badge';
+import { routes } from '@/config/routes';
 
 const { t } = useI18n();
 const page = usePage();
@@ -33,7 +34,7 @@ const statusVariant = (status) => {
                         v-if="page.props.auth.can.createMaintenanceRequest"
                         as-child
                     >
-                        <Link :href="route('maintenance.create')">
+                        <Link :href="routes.maintenanceCreate">
                             {{ t('maintenance.create') }}
                         </Link>
                     </Button>
@@ -51,7 +52,7 @@ const statusVariant = (status) => {
                         >
                             <div>
                                 <h3 class="text-lg font-medium">
-                                    <Link :href="route('maintenance.show', req.id)" class="hover:underline text-indigo-600">
+                                    <Link :href="routes.maintenanceShow(req.id)" class="hover:underline text-indigo-600">
                                         {{ req.title }}
                                     </Link>
                                 </h3>

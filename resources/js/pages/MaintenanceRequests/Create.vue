@@ -6,6 +6,7 @@ import FormInput from '@/components/Form/FormInput.vue';
 import { useI18n } from '@/composables/useI18n';
 import { useForm } from '@inertiajs/vue3';
 import { Label } from '@/components/ui/label';
+import { routes } from '@/config/routes';
 // import { Textarea } from '@/components/ui/textarea'; // Assuming standard Shadcn Textarea exists or use native
 
 const { t } = useI18n();
@@ -21,7 +22,7 @@ const form = useForm({
 });
 
 const submit = () => {
-    form.post(route('maintenance.store'));
+    form.post(routes.maintenanceStore);
 };
 </script>
 

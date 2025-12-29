@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { useI18n } from '@/composables/useI18n';
 import { Link, usePage } from '@inertiajs/vue3';
 import { FileText, Download, Upload } from 'lucide-vue-next';
+import { routes } from '@/config/routes';
 
 const { t } = useI18n();
 const page = usePage();
@@ -33,7 +34,7 @@ const formatSize = (bytes) => {
                         v-if="canUpload"
                         as-child
                     >
-                        <Link :href="route('documents.create')">
+                        <Link :href="routes.documentsCreate">
                             <Upload class="mr-2 h-4 w-4" />
                             {{ t('documents.upload') }}
                         </Link>
@@ -60,7 +61,7 @@ const formatSize = (bytes) => {
                                 </div>
                             </div>
                             <Button variant="outline" size="sm" as-child>
-                                <a :href="route('documents.download', doc.id)">
+                                <a :href="routes.documentsDownload(doc.id)">
                                     <Download class="mr-2 h-4 w-4" />
                                     {{ t('documents.download') }}
                                 </a>

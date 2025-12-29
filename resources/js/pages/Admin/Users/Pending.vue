@@ -12,6 +12,7 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { format } from 'date-fns';
+import { routes } from '@/config/routes';
 
 const { t } = useI18n();
 
@@ -31,7 +32,7 @@ defineProps<{
 
 const approve = (userId: number) => {
     if (confirm(t('verification.confirm_approve'))) {
-        router.patch(route('admin.users.approve', userId), {}, {
+        router.patch(routes.adminUsersApprove(userId), {}, {
             preserveScroll: true,
         });
     }
@@ -40,7 +41,7 @@ const approve = (userId: number) => {
 const reject = (userId: number) => {
     const reason = prompt(t('verification.enter_rejection_reason'));
     if (reason !== null) {
-        router.patch(route('admin.users.reject', userId), { reason }, {
+        router.patch(routes.adminUsersReject(userId), { reason }, {
             preserveScroll: true,
         });
     }

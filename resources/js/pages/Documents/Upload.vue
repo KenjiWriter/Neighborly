@@ -6,6 +6,7 @@ import { Label } from '@/components/ui/label';
 import { useI18n } from '@/composables/useI18n';
 import { useForm, usePage } from '@inertiajs/vue3';
 import { Upload } from 'lucide-vue-next';
+import { routes } from '@/config/routes';
 
 const { t } = useI18n();
 const page = usePage();
@@ -17,7 +18,7 @@ const form = useForm({
 });
 
 const submit = () => {
-    form.post(route('documents.store'), {
+    form.post(routes.documentsStore, {
         forceFormData: true,
     });
 };
