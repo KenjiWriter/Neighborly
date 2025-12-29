@@ -13,9 +13,11 @@ import {
 } from '@/components/ui/sidebar';
 import { dashboard } from '@/routes';
 import { type NavItem } from '@/types';
-import { usePage } from '@inertiajs/vue3';
+import { usePage, Link } from '@inertiajs/vue3';
+import { BookOpen, Folder, LayoutGrid, PieChart, FileText, ShieldCheck } from 'lucide-vue-next';
 import { computed } from 'vue';
 import { useI18n } from '@/composables/useI18n';
+import AppLogo from '@/components/AppLogo.vue';
 
 const { t } = useI18n();
 const page = usePage();
@@ -23,7 +25,7 @@ const page = usePage();
 const mainNavItems = computed(() => {
     const items: NavItem[] = [
         {
-            title: t('dashboard.title', 'Dashboard'),
+            title: t('dashboard.title'),
             href: dashboard(),
             icon: LayoutGrid,
         },
@@ -31,7 +33,7 @@ const mainNavItems = computed(() => {
 
     if (page.props.auth.can.viewCommunityPrimary) {
         items.push({
-            title: t('community.title', 'Community'),
+            title: t('community.title'),
             href: route('communities.show'),
             icon: Folder,
         });
@@ -39,21 +41,15 @@ const mainNavItems = computed(() => {
 
     if (page.props.auth.can.viewMaintenanceRequests) {
         items.push({
-            title: t('maintenance.title', 'Maintenance'),
+            title: t('maintenance.title'),
             href: route('maintenance.index'),
-            icon: LayoutGrid, // Keeping generic icon or import Wrench? 
-                              // Sidebar imports specific icons. Let's stick to Folder or LayoutGrid 
-                              // unless I check imports. Step 452 showed BookOpen, Folder, LayoutGrid.
-                              // Let's use LayoutGrid or Folder for now to avoid import errors.
-                              // Or better: Re-check imports in AppSidebar.vue to see if Wrench is available?
-                              // Step 452: import { BookOpen, Folder, LayoutGrid } from 'lucide-vue-next';
-                              // So Wrench is NOT imported. I will use LayoutGrid for now.
+            icon: LayoutGrid, 
         });
     }
 
     if (page.props.auth.can.viewFinanceOverview) {
         items.push({
-            title: t('finance.overview', 'Finance'),
+            title: t('finance.overview'),
             href: route('finances.overview'),
             icon: PieChart, 
         });
@@ -61,9 +57,17 @@ const mainNavItems = computed(() => {
 
     if (page.props.auth.can.viewDocuments) {
         items.push({
-            title: t('documents.title', 'Documents'),
+            title: t('documents.title'),
             href: route('documents.index'),
             icon: FileText, 
+        });
+    }
+
+    if (page.props.auth.can.viewAudit) {
+        items.push({
+            title: t('audit.title'),
+            href: route('audit.index'),
+            icon: ShieldCheck, 
         });
     }
 

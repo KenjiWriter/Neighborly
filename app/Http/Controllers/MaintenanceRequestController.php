@@ -90,7 +90,7 @@ class MaintenanceRequestController extends Controller
              $communityId = \App\Models\Community::first()->id; 
         }
 
-        MaintenanceRequest::create([
+        $requestModel = MaintenanceRequest::create([
             'title' => $validated['title'],
             'description' => $validated['description'],
             'unit_id' => $validated['unit_id'] ?? null,
@@ -98,6 +98,18 @@ class MaintenanceRequestController extends Controller
             'created_by_user_id' => $request->user()->id,
             'status' => MaintenanceRequest::STATUS_OPEN,
         ]);
+
+        app(\App\Services\Audit\AuditLogger::class)->log(
+            'maintenance.created',
+            $requestModel,
+            [
+                'maintenance_request_id' => $requestModel->id,
+                'community_id' => $communityId,
+                'unit_id' => $requestModel->unit_id,
+                'status' => $requestModel->status,
+                // description is purposefully exempted from audit by sanitization
+            ]
+        );
 
         return redirect()->route('maintenance.index')->with('success', 'Request created successfully.');
     }
@@ -157,6 +169,15 @@ class MaintenanceRequestController extends Controller
             'assigned_to_user_id' => $assignee->id,
         ]);
 
+        app(\App\Services\Audit\AuditLogger::class)->log(
+            'maintenance.assigned',
+            $maintenanceRequest,
+            [
+                'maintenance_request_id' => $maintenanceRequest->id,
+                'assigned_to_user_id' => $assignee->id,
+            ]
+        );
+
         return back()->with('success', 'Provider assigned.');
     }
 
@@ -212,6 +233,16 @@ class MaintenanceRequestController extends Controller
                 'closed_at' => now(),
             ]);
         }
+
+        app(\App\Services\Audit\AuditLogger::class)->log(
+            'maintenance.status_changed',
+            $maintenanceRequest,
+            [
+                'maintenance_request_id' => $maintenanceRequest->id,
+                'from_status' => $oldStatus,
+                'to_status' => $newStatus,
+            ]
+        );
 
         return back()->with('success', 'Status updated.');
     }

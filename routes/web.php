@@ -44,6 +44,10 @@ Route::controller(\App\Http\Controllers\DocumentController::class)->group(functi
     Route::get('documents/{document}/download', 'download')->name('documents.download');
 })->middleware(['auth', 'verified']);
 
+Route::get('audit', [\App\Http\Controllers\AuditLogController::class, 'index'])
+    ->middleware(['auth', 'verified'])
+    ->name('audit.index');
+
 require __DIR__.'/settings.php';
 
 Route::get('locale/{locale}', function ($locale) {

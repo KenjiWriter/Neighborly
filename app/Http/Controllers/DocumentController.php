@@ -73,7 +73,7 @@ class DocumentController extends Controller
             return back()->with('error', 'File upload failed.');
         }
 
-        Document::create([
+        $document = Document::create([
             'community_id' => $communityId,
             'original_name' => $originalName,
             'stored_path' => $path,
@@ -82,6 +82,16 @@ class DocumentController extends Controller
             'uploaded_by_user_id' => $user->id,
             // 'finance_entry_id' => optional
         ]);
+
+        app(\App\Services\Audit\AuditLogger::class)->log(
+            'documents.uploaded',
+            $document,
+            [
+                'document_id' => $document->id,
+                'original_name' => $document->original_name,
+                'size_bytes' => $document->size_bytes,
+            ]
+        );
 
         return redirect()->route('documents.index')->with('success', 'Document uploaded.');
     }
@@ -93,6 +103,14 @@ class DocumentController extends Controller
         if (!Storage::exists($document->stored_path)) {
             abort(404);
         }
+
+        app(\App\Services\Audit\AuditLogger::class)->log(
+            'documents.downloaded',
+            $document,
+            [
+                'document_id' => $document->id,
+            ]
+        );
 
         return Storage::download($document->stored_path, $document->original_name);
     }
