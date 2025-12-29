@@ -35,4 +35,15 @@ return [
         'buildings' => 'Buildings',
         'units' => 'Units',
     ],
+    'roles' => [
+        'resident' => 'Resident',
+        'board_member' => 'Board Member',
+        'accountant' => 'Accountant',
+        'service_provider' => 'Service Provider',
+        'admin' => 'Administrator',
+    ],
+    'error' => [
+        'forbidden' => 'Forbidden',
+        'forbidden_message' => 'You do not have permission to access this page.',
+    ],
 ];

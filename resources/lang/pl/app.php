@@ -35,4 +35,15 @@ return [
         'buildings' => 'Budynki',
         'units' => 'Lokale',
     ],
+    'roles' => [
+        'resident' => 'Mieszkaniec',
+        'board_member' => 'Członek Zarządu',
+        'accountant' => 'Księgowy',
+        'service_provider' => 'Usługodawca',
+        'admin' => 'Administrator',
+    ],
+    'error' => [
+        'forbidden' => 'Zabronione',
+        'forbidden_message' => 'Nie masz uprawnień do dostępu do tej strony.',
+    ],
 ];
