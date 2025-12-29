@@ -22,3 +22,8 @@
 ## Stubs
 - Use the templates in `resources/js/Components` as a base for new UI elements.
 - Do not hardcode styles; use the existing component library (Tailwind + standardized components).
+
+## Route Helpers
+> [!IMPORTANT]
+> **Do not use Wayfinder route helpers (e.g., `login.url()`, `home()`) in critical layouts (Auth layouts) until route generation is stable.**
+> Use static paths (e.g., `'/login'`, `'/'`) or Inertia router for now to avoid runtime crashes (`ReferenceError: queryParams is not defined`).
