@@ -24,6 +24,14 @@ class User extends Authenticatable
         'password',
         'locale',
         'community_id',
+        'verification_status',
+        'verified_at',
+        'rejected_at',
+        'rejection_reason',
+        'address_line1',
+        'address_line2',
+        'city',
+        'postal_code',
     ];
 
     public function community(): \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -59,8 +67,25 @@ class User extends Authenticatable
     {
         return [
             'email_verified_at' => 'datetime',
+            'verified_at' => 'datetime',
+            'rejected_at' => 'datetime',
             'password' => 'hashed',
             'two_factor_confirmed_at' => 'datetime',
         ];
+    }
+
+    public function isApproved(): bool
+    {
+        return $this->verification_status === 'approved';
+    }
+
+    public function isPending(): bool
+    {
+        return $this->verification_status === 'pending';
+    }
+
+    public function isRejected(): bool
+    {
+        return $this->verification_status === 'rejected';
     }
 }
