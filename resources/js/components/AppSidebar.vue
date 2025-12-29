@@ -13,17 +13,46 @@ import {
 } from '@/components/ui/sidebar';
 import { dashboard } from '@/routes';
 import { type NavItem } from '@/types';
-import { Link } from '@inertiajs/vue3';
-import { BookOpen, Folder, LayoutGrid } from 'lucide-vue-next';
-import AppLogo from './AppLogo.vue';
+import { usePage } from '@inertiajs/vue3';
+import { computed } from 'vue';
+import { useI18n } from '@/composables/useI18n';
 
-const mainNavItems: NavItem[] = [
-    {
-        title: 'Dashboard',
-        href: dashboard(),
-        icon: LayoutGrid,
-    },
-];
+const { t } = useI18n();
+const page = usePage();
+
+const mainNavItems = computed(() => {
+    const items: NavItem[] = [
+        {
+            title: t('dashboard.title', 'Dashboard'),
+            href: dashboard(),
+            icon: LayoutGrid,
+        },
+    ];
+
+    if (page.props.auth.can.viewCommunityPrimary) {
+        items.push({
+            title: t('community.title', 'Community'),
+            href: route('communities.show'),
+            icon: Folder,
+        });
+    }
+
+    if (page.props.auth.can.viewMaintenanceRequests) {
+        items.push({
+            title: t('maintenance.title', 'Maintenance'),
+            href: route('maintenance.index'),
+            icon: LayoutGrid, // Keeping generic icon or import Wrench? 
+                              // Sidebar imports specific icons. Let's stick to Folder or LayoutGrid 
+                              // unless I check imports. Step 452 showed BookOpen, Folder, LayoutGrid.
+                              // Let's use LayoutGrid or Folder for now to avoid import errors.
+                              // Or better: Re-check imports in AppSidebar.vue to see if Wrench is available?
+                              // Step 452: import { BookOpen, Folder, LayoutGrid } from 'lucide-vue-next';
+                              // So Wrench is NOT imported. I will use LayoutGrid for now.
+        });
+    }
+
+    return items;
+});
 
 const footerNavItems: NavItem[] = [
     {

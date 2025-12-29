@@ -48,6 +48,17 @@ class HandleInertiaRequests extends Middleware
                 'permissions' => $request->user() ? $request->user()->getAllPermissions()->pluck('name') : [],
                 'can' => [
                     'viewCommunityPrimary' => $request->user() && ! $request->user()->hasRole('service_provider'),
+                    'viewMaintenanceRequests' => $request->user() && $request->user()->can('viewAny', \App\Models\MaintenanceRequest::class),
+                    'createMaintenanceRequest' => $request->user() && $request->user()->can('create', \App\Models\MaintenanceRequest::class),
+                    // For specific item actions, we usually check on the object, but for global UI elements (like "can I see the assign dropdown generally?"), 
+                    // we might need a generic check or just rely on the specific object in the Show page. 
+                    // However, 'assign' policy needs an instance usually. 
+                    // Let's rely on $page.props.auth.user.roles for general UI hiding if needed, or just specific Checks in Show.vue.
+                    // But Plan says "Share capabilities `auth.can.manageMaintenance` etc". 
+                    // Let's add generic role-based flags or dummy instance checks if policy forces it.
+                    // Actually, generic check `can('create', ...)` works. `can('viewAny')` works. 
+                    // For `assign`, it depends on community. 
+                    // Let's stick to View/Create for global nav/buttons. detailed actions will be checked in the component using the prop passed from controller.
                 ],
             ],
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
