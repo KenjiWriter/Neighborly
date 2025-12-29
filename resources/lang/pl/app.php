@@ -2,24 +2,37 @@
 
 return [
     'common' => [
-        'dashboard' => 'Panel główny',
         'save' => 'Zapisz',
         'cancel' => 'Anuluj',
         'back' => 'Wróć',
-        'delete' => 'Usuń',
-        'edit' => 'Edytuj',
-        'create' => 'Utwórz',
+        'logout' => 'Wyloguj się',
         'actions' => 'Akcje',
-        'loading' => 'Ładowanie...',
-        'no_data' => 'Brak danych',
     ],
     'auth' => [
         'login' => 'Zaloguj się',
-        'logout' => 'Wyloguj',
-        'email' => 'Adres email',
+        'email' => 'Email',
         'password' => 'Hasło',
         'remember_me' => 'Zapamiętaj mnie',
-        'forgot_password' => 'Nie pamiętasz hasła?',
+        'forgot_password' => 'Zapomniałeś hasła?',
+        'name' => 'Imię',
+        'confirm_password' => 'Potwierdź hasło',
         'register' => 'Zarejestruj się',
+        'already_registered' => 'Już zarejestrowany?',
+    ],
+    'dashboard' => [
+        'title' => 'Pulpit',
+        'welcome' => 'Witaj w Neighborly',
+        'logged_in' => 'Jesteś zalogowany!',
+    ],
+    'profile' => [
+        'title' => 'Profil',
+        'description' => 'Zobacz informacje o swoim koncie.',
+        'information' => 'Informacje o profilu',
+    ],
+    'community' => [
+        'title' => 'Wspólnota',
+        'summary' => 'Podsumowanie wspólnoty',
+        'buildings' => 'Budynki',
+        'units' => 'Lokale',
     ],
 ];
