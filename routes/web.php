@@ -10,43 +10,61 @@ Route::get('/', function () {
     ]);
 })->name('home');
 
-Route::get('dashboard', [\App\Http\Controllers\DashboardController::class, 'index'])
-    ->middleware(['auth', 'verified'])
-    ->name('dashboard');
+Route::middleware(['auth', 'verified'])->group(function () {
+    // Account Verification Status Routes
+    Route::get('/account/status', function () {
+        return Inertia::render('Account/Status');
+    })->name('account.status');
 
-Route::get('profile', [\App\Http\Controllers\ProfileController::class, 'edit'])
-    ->middleware(['auth', 'verified'])
-    ->name('profile.edit');
+    Route::get('/account/pending', function () {
+        return Inertia::render('Account/Pending');
+    })->name('account.pending');
 
-Route::get('communities/primary', [\App\Http\Controllers\CommunityController::class, 'showPrimary'])
-    ->middleware(['auth', 'verified'])
-    ->name('communities.show');
+    Route::get('/account/rejected', function () {
+        return Inertia::render('Account/Rejected');
+    })->name('account.rejected');
 
-// Maintenance Requests
-Route::controller(\App\Http\Controllers\MaintenanceRequestController::class)->group(function () {
-    Route::get('maintenance', 'index')->name('maintenance.index');
-    Route::get('maintenance/create', 'create')->name('maintenance.create');
-    Route::post('maintenance', 'store')->name('maintenance.store');
-    Route::get('maintenance/{maintenanceRequest}', 'show')->name('maintenance.show');
-    Route::patch('maintenance/{maintenanceRequest}/assign', 'assign')->name('maintenance.assign');
-    Route::patch('maintenance/{maintenanceRequest}/status', 'updateStatus')->name('maintenance.status');
-})->middleware(['auth', 'verified']);
+    // Admin Verification Routes
+    Route::middleware(['approved', 'role:admin'])->prefix('admin')->name('admin.')->group(function () { // Assuming 'role' middleware exists from Spatie
+        Route::get('/users/pending', [\App\Http\Controllers\Admin\UserVerificationController::class, 'index'])->name('users.pending');
+        Route::patch('/users/{user}/approve', [\App\Http\Controllers\Admin\UserVerificationController::class, 'approve'])->name('users.approve');
+        Route::patch('/users/{user}/reject', [\App\Http\Controllers\Admin\UserVerificationController::class, 'reject'])->name('users.reject');
+    });
 
-// Finance & Documents
-Route::controller(\App\Http\Controllers\FinanceController::class)->group(function () {
-    Route::get('finances/overview', 'overview')->name('finances.overview');
-})->middleware(['auth', 'verified']);
+    // Approved Users Only
+    Route::middleware(['approved'])->group(function () {
+        Route::get('dashboard', [\App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard');
+        Route::get('profile', [\App\Http\Controllers\ProfileController::class, 'edit'])->name('profile.edit');
+        Route::get('communities/primary', [\App\Http\Controllers\CommunityController::class, 'showPrimary'])->name('communities.show');
 
-Route::controller(\App\Http\Controllers\DocumentController::class)->group(function () {
-    Route::get('documents', 'index')->name('documents.index');
-    Route::get('documents/upload', 'create')->name('documents.create');
-    Route::post('documents', 'store')->name('documents.store');
-    Route::get('documents/{document}/download', 'download')->name('documents.download');
-})->middleware(['auth', 'verified']);
+        // Maintenance
+        Route::controller(\App\Http\Controllers\MaintenanceRequestController::class)->group(function () {
+            Route::get('maintenance', 'index')->name('maintenance.index');
+            Route::get('maintenance/create', 'create')->name('maintenance.create');
+            Route::post('maintenance', 'store')->name('maintenance.store');
+            Route::get('maintenance/{maintenanceRequest}', 'show')->name('maintenance.show');
+            Route::patch('maintenance/{maintenanceRequest}/assign', 'assign')->name('maintenance.assign');
+            Route::patch('maintenance/{maintenanceRequest}/status', 'updateStatus')->name('maintenance.status');
+        });
 
-Route::get('audit', [\App\Http\Controllers\AuditLogController::class, 'index'])
-    ->middleware(['auth', 'verified'])
-    ->name('audit.index');
+        // Finance
+        Route::controller(\App\Http\Controllers\FinanceController::class)->group(function () {
+            Route::get('finances/overview', 'overview')->name('finances.overview');
+        });
+
+        // Documents
+        Route::controller(\App\Http\Controllers\DocumentController::class)->group(function () {
+            Route::get('documents', 'index')->name('documents.index');
+            Route::get('documents/upload', 'create')->name('documents.create');
+            Route::post('documents', 'store')->name('documents.store');
+            Route::get('documents/{document}/download', 'download')->name('documents.download');
+        });
+
+        // Audit
+        Route::get('audit', [\App\Http\Controllers\AuditLogController::class, 'index'])->name('audit.index');
+    });
+});
+
 
 require __DIR__.'/settings.php';
 
