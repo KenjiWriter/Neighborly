@@ -18,6 +18,10 @@ Route::get('profile', [\App\Http\Controllers\ProfileController::class, 'edit'])
     ->middleware(['auth', 'verified'])
     ->name('profile.edit');
 
+Route::get('communities/primary', [\App\Http\Controllers\CommunityController::class, 'showPrimary'])
+    ->middleware(['auth', 'verified'])
+    ->name('communities.show');
+
 require __DIR__.'/settings.php';
 
 Route::get('locale/{locale}', function ($locale) {
