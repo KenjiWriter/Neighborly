@@ -4,6 +4,7 @@ import { Head, Link, usePage } from '@inertiajs/vue3'; // Added proper import
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button'; // Added import for Button
 import { useI18n } from '@/composables/useI18n';
+import { routes } from '@/config/routes';
 
 const { t } = useI18n();
 const page = usePage();
@@ -36,7 +37,7 @@ const statusVariant = (status: string) => {
                         <div v-if="user.verification_status === 'approved'" class="text-center py-4">
                             <p class="text-green-600 font-medium mb-4">{{ t('verification.approved_message') }}</p>
                             <Button as-child>
-                                <Link :href="route('dashboard')">{{ t('audit.go_dashboard') }}</Link> <!-- Reusing existing key or will add new -->
+                                <Link :href="routes.dashboard">{{ t('audit.go_dashboard') }}</Link> <!-- Reusing existing key or will add new -->
                             </Button>
                         </div>
 

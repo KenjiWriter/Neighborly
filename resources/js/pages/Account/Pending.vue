@@ -3,6 +3,7 @@ import AppLayout from '@/layouts/AppLayout.vue';
 import { Head, Link } from '@inertiajs/vue3';
 import { Button } from '@/components/ui/button';
 import { useI18n } from '@/composables/useI18n';
+import { routes } from '@/config/routes';
 
 const { t } = useI18n();
 </script>
@@ -18,7 +19,7 @@ const { t } = useI18n();
             </p>
             <div class="flex gap-4">
                 <Button as-child variant="default">
-                    <Link :href="route('account.status')">
+                    <Link :href="routes.accountStatus">
                         {{ t('verification.check_status_btn') }}
                     </Link>
                 </Button>
