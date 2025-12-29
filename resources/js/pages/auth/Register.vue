@@ -55,12 +55,64 @@ import { Form, Head } from '@inertiajs/vue3';
                 </div>
 
                 <div class="grid gap-2">
+                    <Label for="address_line1">Address Line 1</Label>
+                    <Input
+                        id="address_line1"
+                        type="text"
+                        required
+                        :tabindex="3"
+                        name="address_line1"
+                        placeholder="Street address"
+                    />
+                    <InputError :message="errors.address_line1" />
+                </div>
+
+                <div class="grid gap-2">
+                    <Label for="address_line2">Address Line 2 (Optional)</Label>
+                    <Input
+                        id="address_line2"
+                        type="text"
+                        :tabindex="4"
+                        name="address_line2"
+                        placeholder="Apartment, suite, etc."
+                    />
+                    <InputError :message="errors.address_line2" />
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="grid gap-2">
+                        <Label for="city">City</Label>
+                        <Input
+                            id="city"
+                            type="text"
+                            required
+                            :tabindex="5"
+                            name="city"
+                            placeholder="City"
+                        />
+                        <InputError :message="errors.city" />
+                    </div>
+                    <div class="grid gap-2">
+                        <Label for="postal_code">Postal Code</Label>
+                        <Input
+                            id="postal_code"
+                            type="text"
+                            required
+                            :tabindex="6"
+                            name="postal_code"
+                            placeholder="Postal Code"
+                        />
+                        <InputError :message="errors.postal_code" />
+                    </div>
+                </div>
+
+                <div class="grid gap-2">
                     <Label for="password">Password</Label>
                     <Input
                         id="password"
                         type="password"
                         required
-                        :tabindex="3"
+                        :tabindex="7"
                         autocomplete="new-password"
                         name="password"
                         placeholder="Password"
@@ -74,7 +126,7 @@ import { Form, Head } from '@inertiajs/vue3';
                         id="password_confirmation"
                         type="password"
                         required
-                        :tabindex="4"
+                        :tabindex="8"
                         autocomplete="new-password"
                         name="password_confirmation"
                         placeholder="Confirm password"
