@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import FormInput from '@/components/Form/FormInput.vue';
 import TextLink from '@/components/TextLink.vue';
 import { Button } from '@/components/ui/button';
@@ -6,25 +6,36 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import { Spinner } from '@/components/ui/spinner';
 import AuthBase from '@/layouts/AuthLayout.vue';
-import { store } from '@/routes/login';
-import { Form, Head } from '@inertiajs/vue3';
+import { Head, useForm } from '@inertiajs/vue3';
 import { useI18n } from '@/composables/useI18n';
 
 const { t } = useI18n();
 
-defineProps({
-    status: String,
-    canResetPassword: Boolean,
-    canRegister: Boolean,
+defineProps<{
+    status?: string;
+    canResetPassword?: boolean;
+    canRegister?: boolean;
+}>();
+
+const form = useForm({
+    email: '',
+    password: '',
+    remember: false,
 });
+
+const submit = () => {
+    form.post('/login', {
+        onFinish: () => form.reset('password'),
+    });
+};
 </script>
 
 <template>
     <AuthBase
-        :title="t('auth.login_title', 'Log in to your account')"
-        :description="t('auth.login_description', 'Enter your email and password below to log in')"
+        :title="t('auth.login.title', 'Log in to your account')"
+        :description="t('auth.login.description', 'Enter your email and password below to log in')"
     >
-        <Head :title="t('auth.login')" />
+        <Head :title="t('auth.login.title')" />
 
         <div
             v-if="status"
@@ -33,58 +44,61 @@ defineProps({
             {{ status }}
         </div>
 
-        <Form
-            v-bind="store.form()"
-            :reset-on-success="['password']"
-            v-slot="{ errors, processing }"
-            class="flex flex-col gap-6"
-        >
+        <form @submit.prevent="submit" class="flex flex-col gap-6">
             <div class="grid gap-6">
                 <!-- Email -->
                 <div class="grid gap-2">
                     <FormInput
                         id="email"
+                        v-model="form.email"
                         type="email"
                         name="email"
                         required
                         autofocus
                         :tabindex="1"
                         autocomplete="email"
-                        :label="t('auth.email')"
+                        :label="t('auth.fields.email')"
                         :placeholder="t('auth.email_placeholder', 'email@example.com')"
-                        :error="errors.email"
+                        :error="form.errors.email"
                     />
                 </div>
 
                 <!-- Password -->
                 <div class="grid gap-2">
                     <div class="flex items-center justify-between">
-                        <Label for="password">{{ t('auth.password') }}</Label>
+                        <Label for="password">{{ t('auth.fields.password') }}</Label>
                         <TextLink
                             v-if="canResetPassword"
                             href="/forgot-password"
                             class="text-sm"
                             :tabindex="5"
                         >
-                            {{ t('auth.forgot_password') }}
+                            {{ t('auth.links.forgot_password') }}
                         </TextLink>
                     </div>
                     <FormInput
                         id="password"
+                        v-model="form.password"
                         type="password"
                         name="password"
                         required
                         :tabindex="2"
                         autocomplete="current-password"
-                        :placeholder="t('auth.password')"
-                        :error="errors.password"
+                        :placeholder="t('auth.fields.password')"
+                        :error="form.errors.password"
                     />
                 </div>
 
                 <!-- Remember Me -->
                 <div class="flex items-center justify-between">
                     <Label for="remember" class="flex items-center space-x-3">
-                        <Checkbox id="remember" name="remember" :tabindex="3" />
+                        <Checkbox 
+                            id="remember" 
+                            name="remember" 
+                            :checked="form.remember" 
+                            @update:checked="form.remember = $event"
+                            :tabindex="3" 
+                        />
                         <span>{{ t('auth.remember_me') }}</span>
                     </Label>
                 </div>
@@ -93,11 +107,11 @@ defineProps({
                     type="submit"
                     class="mt-4 w-full"
                     :tabindex="4"
-                    :disabled="processing"
+                    :disabled="form.processing"
                     data-test="login-button"
                 >
-                    <Spinner v-if="processing" />
-                    {{ t('auth.login') }}
+                    <Spinner v-if="form.processing" />
+                    {{ t('auth.actions.login') }}
                 </Button>
             </div>
 
@@ -105,9 +119,9 @@ defineProps({
                 class="text-center text-sm text-muted-foreground"
                 v-if="canRegister"
             >
-                {{ t('auth.not_registered', "Don't have an account?") }}
-                <TextLink href="/register" :tabindex="5">{{ t('auth.register') }}</TextLink>
+                {{ t('auth.links.not_registered', "Don't have an account?") }}
+                <TextLink href="/register" :tabindex="5">{{ t('auth.actions.register') }}</TextLink>
             </div>
-        </Form>
+        </form>
     </AuthBase>
 </template>
