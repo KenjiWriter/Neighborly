@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
             CommunitySeeder::class,
             UserSeeder::class,
             MaintenanceRequestSeeder::class,
+            FinanceSeeder::class,
         ]);
     }
 }

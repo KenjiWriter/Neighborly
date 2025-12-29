@@ -51,6 +51,22 @@ const mainNavItems = computed(() => {
         });
     }
 
+    if (page.props.auth.can.viewFinanceOverview) {
+        items.push({
+            title: t('finance.overview', 'Finance'),
+            href: route('finances.overview'),
+            icon: PieChart, 
+        });
+    }
+
+    if (page.props.auth.can.viewDocuments) {
+        items.push({
+            title: t('documents.title', 'Documents'),
+            href: route('documents.index'),
+            icon: FileText, 
+        });
+    }
+
     return items;
 });
 
