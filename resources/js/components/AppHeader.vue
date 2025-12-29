@@ -199,7 +199,25 @@ const rightNavItems: NavItem[] = [
                             />
                         </Button>
 
-                        <div class="hidden space-x-1 lg:flex">
+                        <div class="hidden space-x-1 lg:flex px-2">
+                            <DropdownMenu>
+                                <DropdownMenuTrigger as-child>
+                                    <Button variant="ghost" size="sm" class="uppercase">
+                                        {{ $page.props.locale || 'en' }}
+                                    </Button>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent>
+                                    <template v-for="locale in ['en', 'pl']" :key="locale">
+                                        <a :href="`/locale/${locale}`" class="block">
+                                            <div class="relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 hover:bg-accent hover:text-accent-foreground">
+                                                {{ locale.toUpperCase() }}
+                                            </div>
+                                        </a>
+                                    </template>
+                                </DropdownMenuContent>
+                            </DropdownMenu>
+                        </div>
+
                             <template
                                 v-for="item in rightNavItems"
                                 :key="item.title"
