@@ -13,9 +13,13 @@ class AuditLogPolicy
      */
     public function viewAny(User $user): bool
     {
-        // All authenticated users can technically "view audit logs",
-        // but the results will be strictly scoped by the Controller/Model logic.
-        return true;
+        // Residents and service providers are denied audit access entirely
+        if ($user->hasRole(['resident', 'service_provider'])) {
+            return false;
+        }
+
+        // Staff (board_member, accountant, admin) can view audit logs
+        return $user->hasRole(['admin', 'board_member', 'accountant']);
     }
 
     /**

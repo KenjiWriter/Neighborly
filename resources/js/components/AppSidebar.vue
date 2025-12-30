@@ -63,7 +63,22 @@ const mainNavItems = computed(() => {
         });
     }
 
-    if (page.props.auth.can.viewAudit) {
+    // Announcements
+    items.push({
+        title: t('announcements.title'),
+        href: routes.announcementsIndex,
+        icon: BookOpen,
+    });
+
+    // Polls
+    items.push({
+        title: t('polls.title'),
+        href: routes.pollsIndex,
+        icon: PieChart,
+    });
+
+    // Audit (staff only: admin, board_member, accountant)
+    if (page.props.auth.can.viewAudit && page.props.auth.roles.some((role: string) => ['admin', 'board_member', 'accountant'].includes(role))) {
         items.push({
             title: t('audit.title'),
             href: routes.auditIndex,
