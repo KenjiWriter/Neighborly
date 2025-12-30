@@ -46,9 +46,14 @@ class PollController extends Controller
     {
         $this->authorize('create', Poll::class);
 
+        $user = auth()->user();
+        $buildings = $user->hasRole('building_manager')
+            ? $user->managedBuildings()->get(['buildings.id', 'buildings.name'])
+            : \App\Models\Building::forCommunity($user->community_id)->get(['id', 'name']);
+
         return Inertia::render('Polls/Create', [
             'roles' => \Spatie\Permission\Models\Role::pluck('name'),
-            'buildings' => \App\Models\Building::forCommunity(auth()->user()->community_id)->get(['id', 'name']),
+            'buildings' => $buildings,
         ]);
     }
 
@@ -94,10 +99,15 @@ class PollController extends Controller
 
         $poll->load(['options', 'targetedRoles', 'targetedBuildings']);
 
+        $user = auth()->user();
+        $buildings = $user->hasRole('building_manager')
+            ? $user->managedBuildings()->get(['buildings.id', 'buildings.name'])
+            : \App\Models\Building::forCommunity($user->community_id)->get(['id', 'name']);
+
         return Inertia::render('Polls/Edit', [
             'poll' => $poll,
             'roles' => \Spatie\Permission\Models\Role::pluck('name'),
-            'buildings' => \App\Models\Building::forCommunity(auth()->user()->community_id)->get(['id', 'name']),
+            'buildings' => $buildings,
             'targeted_roles' => $poll->targetedRoles->pluck('name'),
             'targeted_buildings' => $poll->targetedBuildings->pluck('id'),
         ]);

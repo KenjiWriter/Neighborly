@@ -38,9 +38,14 @@ class AnnouncementController extends Controller
     {
         $this->authorize('create', Announcement::class);
 
+        $user = auth()->user();
+        $buildings = $user->hasRole('building_manager')
+            ? $user->managedBuildings()->get(['buildings.id', 'buildings.name'])
+            : \App\Models\Building::forCommunity($user->community_id)->get(['id', 'name']);
+
         return Inertia::render('Announcements/Create', [
             'roles' => \Spatie\Permission\Models\Role::pluck('name'),
-            'buildings' => \App\Models\Building::forCommunity(auth()->user()->community_id)->get(['id', 'name']),
+            'buildings' => $buildings,
         ]);
     }
 
@@ -78,10 +83,15 @@ class AnnouncementController extends Controller
 
         $announcement->load(['targetedRoles', 'targetedBuildings', 'targetedUnits']);
 
+        $user = auth()->user();
+        $buildings = $user->hasRole('building_manager')
+            ? $user->managedBuildings()->get(['buildings.id', 'buildings.name'])
+            : \App\Models\Building::forCommunity($user->community_id)->get(['id', 'name']);
+
         return Inertia::render('Announcements/Edit', [
             'announcement' => $announcement,
             'roles' => \Spatie\Permission\Models\Role::pluck('name'),
-            'buildings' => \App\Models\Building::forCommunity(auth()->user()->community_id)->get(['id', 'name']),
+            'buildings' => $buildings,
             'targeted_roles' => $announcement->targetedRoles->pluck('name'),
             'targeted_buildings' => $announcement->targetedBuildings->pluck('id'),
             // 'targeted_units' => $announcement->targetedUnits->pluck('id'), // If implementing unit selection UI

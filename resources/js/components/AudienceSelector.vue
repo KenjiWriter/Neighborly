@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { useI18n } from '@/composables/useI18n';
+import { usePage } from '@inertiajs/vue3';
+import { computed, watchEffect } from 'vue';
 
 const props = defineProps<{
     modelValue: string;
@@ -7,7 +9,7 @@ const props = defineProps<{
     buildings: Array<{ id: number; name: string }>;
     selectedRoles?: string[];
     selectedBuildings?: number[];
-    selectedUnits?: number[]; // Placeholder if we implement unit selection
+    selectedUnits?: number[];
 }>();
 
 const emit = defineEmits<{
@@ -17,15 +19,36 @@ const emit = defineEmits<{
 }>();
 
 const { t } = useI18n();
+const page = usePage();
 
-const audienceTypes = [
+const userRoles = computed(() => (page.props.auth as any).roles || []);
+const isBuildingManager = computed(() => 
+    userRoles.value.includes('building_manager') && 
+    !userRoles.value.includes('admin') && 
+    !userRoles.value.includes('board_member')
+);
+
+const allAudienceTypes = [
     'community_all',
     'residents_all',
     'staff_all',
     'roles_selected',
     'buildings_selected',
-    // 'units_selected' - omitting for now as UI complexity is high without building filter
 ];
+
+const availableAudienceTypes = computed(() => {
+    if (isBuildingManager.value) {
+        return ['buildings_selected'];
+    }
+    return allAudienceTypes;
+});
+
+// Enforce restrictive selection for managers
+watchEffect(() => {
+    if (isBuildingManager.value && props.modelValue !== 'buildings_selected') {
+        emit('update:modelValue', 'buildings_selected');
+    }
+});
 
 const updateRoles = (event: Event) => {
     const target = event.target as HTMLSelectElement;
@@ -51,10 +74,13 @@ const updateBuildings = (event: Event) => {
                 @input="$emit('update:modelValue', ($event.target as HTMLSelectElement).value)"
                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-900 dark:border-gray-700 dark:text-gray-300 sm:text-sm"
             >
-                <option v-for="type in audienceTypes" :key="type" :value="type">
+                <option v-for="type in availableAudienceTypes" :key="type" :value="type">
                     {{ t(`announcements.audience_types.${type}`) }}
                 </option>
             </select>
+            <p v-if="isBuildingManager" class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                {{ t('announcements.scope.building_manager_help') }}
+            </p>
         </div>
 
         <div v-if="modelValue === 'roles_selected'">
