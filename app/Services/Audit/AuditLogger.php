@@ -72,6 +72,8 @@ class AuditLogger
             'finance.entry_created' => ['finance_entry_id', 'type', 'amount_cents', 'category', 'occurred_on'],
             'documents.uploaded' => ['document_id', 'original_name', 'size_bytes', 'mime_type'],
             'documents.downloaded' => ['document_id'],
+            'users.approved' => ['user_id'],
+            'users.rejected' => ['user_id', 'reason'],
         ];
 
         if (!array_key_exists($eventKey, $allowlists)) {
