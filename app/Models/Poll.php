@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Spatie\Permission\Models\Role as SpatieRole;
 
 class Poll extends Model
 {
@@ -45,7 +46,7 @@ class Poll extends Model
 
     public function targetedRoles()
     {
-        return $this->belongsToMany(Role::class, 'poll_role_visibility', 'poll_id', 'role_name', 'id', 'name');
+        return $this->belongsToMany(SpatieRole::class, 'poll_role_visibility', 'poll_id', 'role_name', 'id', 'name');
     }
 
     public function targetedUnits()

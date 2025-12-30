@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Spatie\Permission\Models\Role as SpatieRole;
 
 class Announcement extends Model
 {
@@ -32,7 +33,7 @@ class Announcement extends Model
 
     public function targetedRoles()
     {
-        return $this->belongsToMany(Role::class, 'announcement_role_visibility', 'announcement_id', 'role_name', 'id', 'name');
+        return $this->belongsToMany(SpatieRole::class, 'announcement_role_visibility', 'announcement_id', 'role_name', 'id', 'name');
     }
 
     public function targetedUnits()
