@@ -72,8 +72,10 @@ class Announcement extends Model
 
         // Audience targeting
         $query->where(function ($q) use ($user) {
-            // community_all: everyone in community
-            $q->orWhere('audience_type', 'community_all');
+            // community_all: everyone in community (except building managers)
+            if (!$user->hasRole('building_manager') || $user->hasRole(['resident', 'board_member', 'accountant', 'service_provider'])) {
+                $q->orWhere('audience_type', 'community_all');
+            }
 
             // residents_all: only residents
             if ($user->hasRole('resident')) {
@@ -101,6 +103,16 @@ class Announcement extends Model
             if ($user->hasRole('resident')) {
                 $q->orWhereHas('targetedBuildings', function ($buildingQuery) use ($user) {
                     $buildingQuery->whereIn('building_id', $user->units->pluck('building_id'));
+                });
+            }
+
+            // building_manager: see announcements for managed buildings
+            if ($user->hasRole('building_manager')) {
+                $q->orWhere(function ($managerQ) use ($user) {
+                     $managerQ->where('audience_type', 'buildings_selected')
+                              ->whereHas('targetedBuildings', function ($bq) use ($user) {
+                                  $bq->whereIn('announcement_building_visibility.building_id', $user->managedBuildings->pluck('id'));
+                              });
                 });
             }
         });
