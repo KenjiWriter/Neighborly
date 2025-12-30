@@ -132,16 +132,26 @@ return [
         'actor' => 'User',
         'event' => 'Event',
         'details' => 'Details',
-        'no_records' => 'No audit logs found',
-        'filter_event_key' => 'Filter by event type',
+        'empty' => 'No audit logs found',
         'ip_address' => 'IP Address',
+        'filters' => [
+            'event' => 'Event Type',
+            'from' => 'From Date',
+            'to' => 'To Date',
+        ],
         'events' => [
-            'maintenance.created' => 'Maintenance Created',
-            'maintenance.assigned' => 'Assigned Provider',
-            'maintenance.status_changed' => 'Status Changed',
-            'finance.entry_created' => 'Finance Entry Created',
-            'documents.uploaded' => 'Document Uploaded',
-            'documents.downloaded' => 'Document Downloaded',
+            'maintenance' => [
+                'created' => 'Maintenance Created',
+                'assigned' => 'Assigned Provider',
+                'status_changed' => 'Status Changed',
+            ],
+            'finance' => [
+                'entry_created' => 'Finance Entry Created',
+            ],
+            'documents' => [
+                'uploaded' => 'Document Uploaded',
+                'downloaded' => 'Document Downloaded',
+            ],
         ],
     ],
     'verification' => [

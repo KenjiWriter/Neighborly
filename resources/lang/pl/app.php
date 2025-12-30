@@ -132,16 +132,26 @@ return [
         'actor' => 'Użytkownik',
         'event' => 'Zdarzenie',
         'details' => 'Szczegóły',
-        'no_records' => 'Brak logów audytu',
-        'filter_event_key' => 'Filtruj po typie zdarzenia',
+        'empty' => 'Brak logów audytu',
         'ip_address' => 'Adres IP',
+        'filters' => [
+            'event' => 'Typ zdarzenia',
+            'from' => 'Od daty',
+            'to' => 'Do daty',
+        ],
         'events' => [
-            'maintenance.created' => 'Utworzono zgłoszenie',
-            'maintenance.assigned' => 'Przypisano dostawcę',
-            'maintenance.status_changed' => 'Zmieniono status',
-            'finance.entry_created' => 'Utworzono wpis finansowy',
-            'documents.uploaded' => 'Przesłano dokument',
-            'documents.downloaded' => 'Pobrano dokument',
+            'maintenance' => [
+                'created' => 'Utworzono zgłoszenie',
+                'assigned' => 'Przypisano dostawcę',
+                'status_changed' => 'Zmieniono status',
+            ],
+            'finance' => [
+                'entry_created' => 'Utworzono wpis finansowy',
+            ],
+            'documents' => [
+                'uploaded' => 'Przesłano dokument',
+                'downloaded' => 'Pobrano dokument',
+            ],
         ],
     ],
     'verification' => [
