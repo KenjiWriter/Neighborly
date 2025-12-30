@@ -14,7 +14,7 @@ import { Input } from '@/components/ui/input';
 import { useI18n } from '@/composables/useI18n';
 import { watch } from 'vue';
 import { router } from '@inertiajs/vue3';
-import { audit } from '@/routes';
+import { routes } from '@/config/routes';
 
 // Define Props
 defineProps<{
@@ -49,7 +49,7 @@ const formatDate = (date: string) => {
 };
 
 const onFilterChange = (key: string, value: string) => {
-    router.get(audit.index(), { [key]: value }, {
+    router.get(routes.auditIndex, { [key]: value }, {
         preserveState: true,
         preserveScroll: true,
         replace: true,
