@@ -72,6 +72,19 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::get('documents/{document}/download', 'download')->name('documents.download');
         });
 
+        // Announcements
+        Route::controller(\App\Http\Controllers\AnnouncementController::class)->group(function () {
+            Route::get('announcements', 'index')->name('announcements.index');
+            Route::get('announcements/{announcement}', 'show')->name('announcements.show');
+        });
+
+        // Polls
+        Route::controller(\App\Http\Controllers\PollController::class)->group(function () {
+            Route::get('polls', 'index')->name('polls.index');
+            Route::get('polls/{poll}', 'show')->name('polls.show');
+            Route::post('polls/{poll}/vote', 'vote')->name('polls.vote');
+        });
+
         // Audit
         Route::get('audit', [\App\Http\Controllers\AuditLogController::class, 'index'])->name('audit.index');
     });

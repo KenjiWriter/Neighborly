@@ -47,6 +47,15 @@ export const routes = {
     // Audit
     auditIndex: '/audit',
 
+    // Announcements
+    announcementsIndex: '/announcements',
+    announcementsShow: (id: string | number) => `/announcements/${id}`,
+
+    // Polls
+    pollsIndex: '/polls',
+    pollsShow: (id: string | number) => `/polls/${id}`,
+    pollsVote: (id: string | number) => `/polls/${id}/vote`,
+
     // Settings
     settings: '/settings',
     settingsProfile: '/settings/profile',
