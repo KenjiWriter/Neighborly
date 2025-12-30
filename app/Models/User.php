@@ -46,6 +46,11 @@ class User extends Authenticatable
             ->withTimestamps();
     }
 
+    public function managedBuildings(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->belongsToMany(Building::class);
+    }
+
     /**
      * The attributes that should be hidden for serialization.
      *

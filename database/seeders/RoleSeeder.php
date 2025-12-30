@@ -42,6 +42,10 @@ class RoleSeeder extends Seeder
         $accountant = Role::firstOrCreate(['name' => 'accountant']);
         $accountant->givePermissionTo(['community.view', 'building.view', 'unit.view']);
 
+        // Building Manager
+        $manager = Role::firstOrCreate(['name' => 'building_manager']);
+        $manager->givePermissionTo(['community.view', 'building.view', 'unit.view']);
+
         // Service Provider
         // Phase 2: Explicitly denied access to Community resources.
         // They only get dashboard/profile access by default (authenticated).

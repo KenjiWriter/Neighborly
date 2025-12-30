@@ -30,4 +30,9 @@ class Building extends Model
     {
         return $query->where('community_id', $communityId);
     }
+
+    public function managers(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->belongsToMany(User::class);
+    }
 }

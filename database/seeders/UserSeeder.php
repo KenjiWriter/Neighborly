@@ -69,6 +69,24 @@ class UserSeeder extends Seeder
         ]);
         $provider->assignRole('service_provider');
 
+        // Building Manager
+        $manager = User::create([
+            'name' => 'Mike Manager',
+            'email' => 'manager@neighborly.test',
+            'password' => $password,
+            'locale' => 'en',
+            'email_verified_at' => now(),
+            'community_id' => $community?->id,
+            'verification_status' => 'approved',
+        ]);
+        $manager->assignRole('building_manager');
+        
+        // Assign to first building
+        $firstBuilding = \App\Models\Building::first();
+        if ($firstBuilding) {
+            $manager->managedBuildings()->attach($firstBuilding);
+        }
+
         // Admin
         $admin = User::create([
             'name' => 'System Admin',
