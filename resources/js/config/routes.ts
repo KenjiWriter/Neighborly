@@ -59,6 +59,9 @@ export const routes = {
 
     // Admin
     adminUsersPending: '/admin/users/pending',
+    adminUsersIndex: '/admin/users',
+    adminUsersEdit: (userId: string | number) => `/admin/users/${userId}/edit`,
+    adminUsersUpdate: (userId: string | number) => `/admin/users/${userId}`,
     adminUsersApprove: (userId: string | number) => `/admin/users/${userId}/approve`,
     adminUsersReject: (userId: string | number) => `/admin/users/${userId}/reject`,
 } as const;

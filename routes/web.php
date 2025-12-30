@@ -36,6 +36,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/users/pending', [\App\Http\Controllers\Admin\UserVerificationController::class, 'index'])->name('users.pending');
         Route::patch('/users/{user}/approve', [\App\Http\Controllers\Admin\UserVerificationController::class, 'approve'])->name('users.approve');
         Route::patch('/users/{user}/reject', [\App\Http\Controllers\Admin\UserVerificationController::class, 'reject'])->name('users.reject');
+        
+        // User Management
+        Route::get('/users', [\App\Http\Controllers\Admin\UserManagementController::class, 'index'])->name('users.index');
+        Route::get('/users/{user}/edit', [\App\Http\Controllers\Admin\UserManagementController::class, 'edit'])->name('users.edit');
+        Route::patch('/users/{user}', [\App\Http\Controllers\Admin\UserManagementController::class, 'update'])->name('users.update');
     });
 
     // Approved Users Only

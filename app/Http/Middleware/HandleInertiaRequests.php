@@ -55,6 +55,7 @@ class HandleInertiaRequests extends Middleware
                     'viewDocuments' => $request->user() && $request->user()->can('viewAny', \App\Models\Document::class),
                     'uploadDocuments' => $request->user() && $request->user()->can('upload', \App\Models\Document::class),
                     'viewAudit' => $request->user() && $request->user()->can('viewAny', \App\Models\AuditLog::class),
+                    'manageUsers' => $request->user() && $request->user()->can('manage', \App\Models\User::class),
                 ],
             ],
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
