@@ -90,6 +90,7 @@ class DocumentController extends Controller
                 'document_id' => $document->id,
                 'original_name' => $document->original_name,
                 'size_bytes' => $document->size_bytes,
+                'mime_type' => $document->mime_type,
             ]
         );
 
