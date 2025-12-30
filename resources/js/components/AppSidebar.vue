@@ -14,7 +14,7 @@ import {
 import { routes } from '@/config/routes';
 import { type NavItem } from '@/types';
 import { usePage, Link } from '@inertiajs/vue3';
-import { BookOpen, Folder, LayoutGrid, PieChart, FileText, ShieldCheck } from 'lucide-vue-next';
+import { BookOpen, Folder, LayoutGrid, PieChart, FileText, ShieldCheck, UserCheck, Users } from 'lucide-vue-next';
 import { computed } from 'vue';
 import { useI18n } from '@/composables/useI18n';
 import AppLogo from '@/components/AppLogo.vue';
@@ -68,6 +68,21 @@ const mainNavItems = computed(() => {
             title: t('audit.title'),
             href: routes.auditIndex,
             icon: ShieldCheck, 
+        });
+    }
+
+    // Admin section
+    if (page.props.auth.can.manageUsers) {
+        items.push({
+            title: t('admin.pending.title'),
+            href: routes.adminUsersPending,
+            icon: UserCheck,
+        });
+        
+        items.push({
+            title: t('admin.users.title'),
+            href: routes.adminUsersIndex,
+            icon: Users,
         });
     }
 
