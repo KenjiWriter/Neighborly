@@ -9,10 +9,10 @@ class UserVerificationController extends Controller
 {
     public function index()
     {
-        // Enforce Admin Policy/Role check here or via middleware in routes
-        // $this->authorize('viewAny', User::class); // Assuming Policy exists or using Spatie middleware
+        $this->authorize('manage', \App\Models\User::class);
 
         $pendingUsers = \App\Models\User::where('verification_status', 'pending')
+            ->with(['units.building.community'])
             ->latest()
             ->paginate(20)
             ->withQueryString();
@@ -24,7 +24,7 @@ class UserVerificationController extends Controller
 
     public function approve(\App\Models\User $user)
     {
-        // $this->authorize('update', $user);
+        $this->authorize('approve', $user);
 
         $user->update([
             'verification_status' => 'approved',
@@ -32,6 +32,13 @@ class UserVerificationController extends Controller
             'rejected_at' => null,
             'rejection_reason' => null,
         ]);
+
+        // Audit log
+        app(\App\Services\Audit\AuditLogger::class)->log(
+            'users.approved',
+            $user,
+            ['user_id' => $user->id]
+        );
 
         // TODO: Send AccountApproved Email
         // Mail::to($user)->send(new \App\Mail\AccountApproved($user));
@@ -41,18 +48,30 @@ class UserVerificationController extends Controller
 
     public function reject(\Illuminate\Http\Request $request, \App\Models\User $user)
     {
-        // $this->authorize('update', $user);
+        $this->authorize('reject', $user);
 
         $validated = $request->validate([
             'reason' => 'nullable|string|max:1000',
         ]);
 
+        $reason = $validated['reason'] ? trim($validated['reason']) : null;
+
         $user->update([
             'verification_status' => 'rejected',
             'rejected_at' => now(),
-            'rejection_reason' => $validated['reason'] ?? null,
+            'rejection_reason' => $reason,
             'verified_at' => null,
         ]);
+
+        // Audit log
+        app(\App\Services\Audit\AuditLogger::class)->log(
+            'users.rejected',
+            $user,
+            [
+                'user_id' => $user->id,
+                'reason' => $reason,
+            ]
+        );
 
         // TODO: Send AccountRejected Email
         // Mail::to($user)->send(new \App\Mail\AccountRejected($user));
