@@ -14,9 +14,31 @@ class AuditLogController extends Controller
             ->with('actor') // Eager load actor
             ->latest();
 
+        // Allowlist for event_key filter
+        $allowedEventKeys = [
+            'maintenance.created',
+            'maintenance.assigned',
+            'maintenance.status_changed',
+            'finance.entry_created',
+            'documents.uploaded',
+            'documents.downloaded',
+        ];
+
         // Optional Filters
         if ($request->filled('event_key')) {
-            $query->where('event_key', $request->input('event_key'));
+            $eventKey = $request->input('event_key');
+            if (in_array($eventKey, $allowedEventKeys)) {
+                $query->where('event_key', $eventKey);
+            }
+        }
+
+        // Date range filters
+        if ($request->filled('from_date')) {
+            $query->where('created_at', '>=', $request->input('from_date'));
+        }
+
+        if ($request->filled('to_date')) {
+            $query->where('created_at', '<=', $request->input('to_date'));
         }
 
         $logs = $query->paginate(20)->withQueryString();
