@@ -25,4 +25,9 @@ class Building extends Model
     {
         return $this->hasMany(Unit::class);
     }
+
+    public function scopeForCommunity($query, $communityId)
+    {
+        return $query->where('community_id', $communityId);
+    }
 }

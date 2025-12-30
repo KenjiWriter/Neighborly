@@ -34,4 +34,14 @@ class Unit extends Model
             ->withPivot('relationship_type')
             ->withTimestamps();
     }
+
+    public function scopeForCommunity($query, $communityId)
+    {
+        return $query->where('community_id', $communityId);
+    }
+
+    public function scopeForBuilding($query, $buildingId)
+    {
+        return $query->where('building_id', $buildingId);
+    }
 }
