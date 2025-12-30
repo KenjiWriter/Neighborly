@@ -42,6 +42,7 @@ return [
         'select_community' => 'Wybierz osiedle',
         'select_building' => 'Wybierz budynek',
         'select_unit' => 'Wybierz lokal',
+        'loading_communities' => 'Ładowanie osiedli...',
         'loading_buildings' => 'Ładowanie budynków...',
         'loading_units' => 'Ładowanie lokali...',
         'no_buildings' => 'Brak budynków',

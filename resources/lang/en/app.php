@@ -42,6 +42,7 @@ return [
         'select_community' => 'Select Community',
         'select_building' => 'Select Building',
         'select_unit' => 'Select Unit',
+        'loading_communities' => 'Loading communities...',
         'loading_buildings' => 'Loading buildings...',
         'loading_units' => 'Loading units...',
         'no_buildings' => 'No buildings found',
