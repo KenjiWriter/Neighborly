@@ -55,6 +55,7 @@ class AuditLogger
             'metadata' => $safeMetadata,
             'ip_address' => Request::ip(),
             'user_agent' => substr(Request::userAgent() ?? '', 0, 65535), // Text column limit
+            'created_at' => now(),
         ]);
     }
 
@@ -69,7 +70,7 @@ class AuditLogger
             'maintenance.assigned' => ['maintenance_request_id', 'assigned_to_user_id'],
             'maintenance.status_changed' => ['maintenance_request_id', 'from_status', 'to_status'],
             'finance.entry_created' => ['finance_entry_id', 'type', 'amount_cents', 'category', 'occurred_on'],
-            'documents.uploaded' => ['document_id', 'original_name', 'size_bytes'],
+            'documents.uploaded' => ['document_id', 'original_name', 'size_bytes', 'mime_type'],
             'documents.downloaded' => ['document_id'],
         ];
 
