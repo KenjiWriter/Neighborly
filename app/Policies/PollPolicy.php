@@ -31,6 +31,22 @@ class PollPolicy
         return $user->hasRole(['admin', 'board_member']);
     }
 
+    public function update(User $user, Poll $poll): bool
+    {
+        if ($user->hasRole('admin')) return true;
+
+        return $user->hasRole('board_member') && 
+               $user->community_id === $poll->community_id;
+    }
+
+    public function delete(User $user, Poll $poll): bool
+    {
+        if ($user->hasRole('admin')) return true;
+
+        return $user->hasRole('board_member') && 
+               $user->community_id === $poll->community_id;
+    }
+
     public function vote(User $user, Poll $poll): bool
     {
         // Must be in same community, poll must be active, and user hasn't voted yet

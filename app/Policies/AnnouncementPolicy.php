@@ -31,11 +31,17 @@ class AnnouncementPolicy
 
     public function update(User $user, Announcement $announcement): bool
     {
-        return $user->hasRole(['admin', 'board_member']);
+        if ($user->hasRole('admin')) return true;
+        
+        return $user->hasRole('board_member') && 
+               $user->community_id === $announcement->community_id;
     }
 
     public function delete(User $user, Announcement $announcement): bool
     {
-        return $user->hasRole(['admin', 'board_member']);
+        if ($user->hasRole('admin')) return true;
+
+        return $user->hasRole('board_member') && 
+               $user->community_id === $announcement->community_id;
     }
 }

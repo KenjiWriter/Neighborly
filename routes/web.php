@@ -75,13 +75,21 @@ Route::middleware(['auth', 'verified'])->group(function () {
         // Announcements
         Route::controller(\App\Http\Controllers\AnnouncementController::class)->group(function () {
             Route::get('announcements', 'index')->name('announcements.index');
+            Route::get('announcements/create', 'create')->name('announcements.create');
+            Route::post('announcements', 'store')->name('announcements.store');
             Route::get('announcements/{announcement}', 'show')->name('announcements.show');
+            Route::get('announcements/{announcement}/edit', 'edit')->name('announcements.edit');
+            Route::put('announcements/{announcement}', 'update')->name('announcements.update');
         });
 
         // Polls
         Route::controller(\App\Http\Controllers\PollController::class)->group(function () {
             Route::get('polls', 'index')->name('polls.index');
+            Route::get('polls/create', 'create')->name('polls.create');
+            Route::post('polls', 'store')->name('polls.store');
             Route::get('polls/{poll}', 'show')->name('polls.show');
+            Route::get('polls/{poll}/edit', 'edit')->name('polls.edit');
+            Route::put('polls/{poll}', 'update')->name('polls.update');
             Route::post('polls/{poll}/vote', 'vote')->name('polls.vote');
         });
 

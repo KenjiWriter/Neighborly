@@ -15,6 +15,7 @@ class Poll extends Model
         'starts_at',
         'ends_at',
         'created_by_user_id',
+        'audience_type',
     ];
 
     protected $casts = [
@@ -42,6 +43,21 @@ class Poll extends Model
         return $this->hasMany(PollVote::class);
     }
 
+    public function targetedRoles()
+    {
+        return $this->belongsToMany(Role::class, 'poll_role_visibility', 'poll_id', 'role_name', 'id', 'name');
+    }
+
+    public function targetedUnits()
+    {
+        return $this->belongsToMany(Unit::class, 'poll_unit_visibility');
+    }
+
+    public function targetedBuildings()
+    {
+        return $this->belongsToMany(Building::class, 'poll_building_visibility');
+    }
+
     public function scopeActive($query)
     {
         return $query->where('starts_at', '<=', now())->where('ends_at', '>=', now());
@@ -55,5 +71,58 @@ class Poll extends Model
     public function hasUserVoted($userId): bool
     {
         return $this->votes()->where('user_id', $userId)->exists();
+    }
+
+    public function scopeVisibleTo($query, User $user)
+    {
+        // Admin sees all
+        if ($user->hasRole('admin')) {
+            return $query;
+        }
+
+        // Community scope
+        $query->where('community_id', $user->community_id);
+
+        // Only active polls for residents; board/admin can preview
+        if (!$user->hasRole(['admin', 'board_member'])) {
+            $query->active();
+        }
+
+        // Audience targeting
+        $query->where(function ($q) use ($user) {
+            // community_all: everyone in community
+            $q->orWhere('audience_type', 'community_all');
+
+            // residents_all: only residents
+            if ($user->hasRole('resident')) {
+                $q->orWhere('audience_type', 'residents_all');
+            }
+
+            // staff_all: board/accountant/provider
+            if ($user->hasRole(['board_member', 'accountant', 'service_provider'])) {
+                $q->orWhere('audience_type', 'staff_all');
+            }
+
+            // roles_selected: user must have one of targeted roles
+            $q->orWhereHas('targetedRoles', function ($roleQuery) use ($user) {
+                $roleQuery->whereIn('role_name', $user->getRoleNames());
+            });
+
+            // units_selected: user must belong to one of targeted units (residents)
+            if ($user->hasRole('resident')) {
+                $q->orWhereHas('targetedUnits', function ($unitQuery) use ($user) {
+                    $unitQuery->whereIn('unit_id', $user->units->pluck('id'));
+                });
+            }
+
+            // buildings_selected: user must belong to unit in one of targeted buildings (residents)
+            if ($user->hasRole('resident')) {
+                $q->orWhereHas('targetedBuildings', function ($buildingQuery) use ($user) {
+                    $buildingQuery->whereIn('building_id', $user->units->pluck('building_id'));
+                });
+            }
+        });
+
+        return $query;
     }
 }

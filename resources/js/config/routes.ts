@@ -49,11 +49,19 @@ export const routes = {
 
     // Announcements
     announcementsIndex: '/announcements',
+    announcementsCreate: '/announcements/create',
+    announcementsStore: '/announcements',
     announcementsShow: (id: string | number) => `/announcements/${id}`,
+    announcementsEdit: (id: string | number) => `/announcements/${id}/edit`,
+    announcementsUpdate: (id: string | number) => `/announcements/${id}`,
 
     // Polls
     pollsIndex: '/polls',
+    pollsCreate: '/polls/create',
+    pollsStore: '/polls',
     pollsShow: (id: string | number) => `/polls/${id}`,
+    pollsEdit: (id: string | number) => `/polls/${id}/edit`,
+    pollsUpdate: (id: string | number) => `/polls/${id}`,
     pollsVote: (id: string | number) => `/polls/${id}/vote`,
 
     // Settings

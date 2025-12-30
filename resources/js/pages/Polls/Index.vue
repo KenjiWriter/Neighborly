@@ -29,7 +29,15 @@ const { t } = useI18n();
         <PageHeader
             :title="t('polls.title')"
             :description="t('polls.description')"
-        />
+        >
+            <Link
+                v-if="$page.props.auth.roles.some((r: string) => ['admin', 'board_member'].includes(r))"
+                :href="routes.pollsCreate"
+                class="inline-flex items-center px-4 py-2 bg-indigo-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-700 active:bg-indigo-900 focus:outline-none focus:border-indigo-900 focus:ring ring-indigo-300 disabled:opacity-25 transition ease-in-out duration-150"
+            >
+                {{ t('common.create') }}
+            </Link>
+        </PageHeader>
 
         <div class="py-6">
             <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
@@ -42,8 +50,17 @@ const { t } = useI18n();
                     <div v-else class="space-y-4">
                         <div v-for="poll in polls.data" :key="poll.id"
                             class="border border-gray-200 dark:border-gray-700 rounded-lg p-4 hover:bg-gray-50 dark:hover:bg-gray-700 transition">
-                            <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">
-                                {{ poll.title }}
+                            <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 flex justify-between items-start">
+                                <span>{{ poll.title }}</span>
+                                <span v-if="new Date(poll.starts_at) > new Date()" class="ml-2 px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200">
+                                    {{ t('common.scheduled') }}
+                                </span>
+                                <span v-else-if="new Date(poll.ends_at) < new Date()" class="ml-2 px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300">
+                                    {{ t('common.ended') }}
+                                </span>
+                                <span v-else class="ml-2 px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
+                                    {{ t('common.active') }}
+                                </span>
                             </h3>
                             <p v-if="poll.description" class="text-sm text-gray-600 dark:text-gray-400 mt-1">
                                 {{ poll.description }}
@@ -54,12 +71,21 @@ const { t } = useI18n();
                                         {{ t('polls.already_voted') }}
                                     </span>
                                 </div>
-                                <Link
-                                    :href="routes.pollsShow(poll.id)"
-                                    class="text-sm text-indigo-600 hover:text-indigo-800 dark:text-indigo-400"
-                                >
-                                    {{ poll.user_has_voted ? t('polls.view') : t('polls.vote') }}
-                                </Link>
+                                <div class="flex gap-4">
+                                    <Link
+                                        v-if="$page.props.auth.roles.some((r: string) => ['admin', 'board_member'].includes(r))"
+                                        :href="routes.pollsEdit(poll.id)"
+                                        class="text-sm text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100"
+                                    >
+                                        {{ t('common.edit') }}
+                                    </Link>
+                                    <Link
+                                        :href="routes.pollsShow(poll.id)"
+                                        class="text-sm text-indigo-600 hover:text-indigo-800 dark:text-indigo-400"
+                                    >
+                                        {{ poll.user_has_voted ? t('polls.view') : t('polls.vote') }}
+                                    </Link>
+                                </div>
                             </div>
                         </div>
                     </div>
